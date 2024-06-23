@@ -1,0 +1,12 @@
+/* VSCode config for js */
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@src/*": ["./src/*"]
+    },
+    "module": "ESNext",
+    "target": "ESNext"
+  },
+  "exclude": ["node_modules", "dist"]
+}
