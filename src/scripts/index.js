@@ -24,7 +24,7 @@ const cardTemplate = document.querySelector('#card-template').content; // пол
 const cardsContainer = document.querySelector('.places__list'); // получаю элемент, в который мы будем вставлять темплейт карточки
 
 // @todo: Функция создания карточки
-function createCard(cardData, deleteCard) {
+function createCard(cardData, deleteCard, likeClickHandler) {
   const cardElement = cardTemplate.querySelector('.card').cloneNode(true); // клонирую шаблон, если убрать cloneNode(true), то будет та же самая ссылка, что и в cardTemplate. Это нужно, чтобы копировать себе шаблон и использовать его, не изменяя общий шаблон
   const cardImage = cardElement.querySelector('.card__image'); // устанавливаю значение для изображения, устанавливаю ссылки на изображение, но уже конкретно в копии шаблона
   const cardTitle = cardElement.querySelector('.card__title'); // устанавливаю значение для заголовка
@@ -35,7 +35,9 @@ function createCard(cardData, deleteCard) {
   cardImage.alt = cardData.name;
 
   const cardDeleteButton = cardElement.querySelector('.card__delete-button'); // устанавливаю значение для кнопки удаления
+  const cardLikeButton = cardElement.querySelector('.card__like-button');
 
+  cardLikeButton.addEventListener('click', likeClickHandler);
   // Обработка события при нажатии на кнопку удаления
   cardDeleteButton.addEventListener('click', () => {
     deleteCard(cardElement);
@@ -81,7 +83,6 @@ const popupImageViewer = document.querySelector('.popup_type_image');
 const body = document.body;
 
 body.addEventListener('click', (e) => {
-  e.preventDefault();
   if (e.target.classList.contains('popup__close') || e.target.classList.contains('popup_is-opened')) {
     closeTopPopup();
   }
@@ -99,17 +100,19 @@ btnProfileAdd.addEventListener('click', (e) => {
   openPopup(popupProfileAdd);
 });
 
-const profileName = document.querySelector('.profile__title').textContent;
-const profileDescription = document.querySelector('.profile__description').textContent;
+const profileName = document.querySelector('.profile__title');
+const profileDescription = document.querySelector('.profile__description');
 const popupNameInput = document.querySelector('.popup__input_type_name');
 const popupDescriptionInput = document.querySelector('.popup__input_type_description');
-const form = document.forms['edit-profile'];
+const formProfile = document.forms['edit-profile'];
+
+const saveButton = document.querySelector('.popup__button');
 
 btnProfileEdit.addEventListener('click', (e) => {
   e.preventDefault();
 
-  popupNameInput.value = profileName;
-  popupDescriptionInput.value = profileDescription;
+  popupNameInput.value = profileName.textContent;
+  popupDescriptionInput.value = profileDescription.textContent;
 
   openPopup(popupProfileEdit);
 });
@@ -123,10 +126,10 @@ function handleFormSubmit(evt) {
   profileName.textContent = currentName;
   profileDescription.textContent = currentDescription;
 
-  closeTopPopup();
+  closeTopPopup(popupProfileEdit);
 }
 
-form.addEventListener('submit', handleFormSubmit);
+formProfile.addEventListener('submit', handleFormSubmit);
 
 document.querySelector('.places__list').addEventListener('click', (e) => {
   if (e.target.classList.contains('card__image')) {
@@ -136,3 +139,34 @@ document.querySelector('.places__list').addEventListener('click', (e) => {
     openPopup(popupImageViewer);
   }
 });
+
+function handleLike(evt) {
+  evt.target.classList.toggle('card__like-button_is-active');
+}
+
+// функция добавления новой карточки также не работает, подозреваю, что если сделать click по кнопке, а не submit, то все будет ок - нифига
+function addNewCard(event) {
+  event.preventDefault();
+
+  const nameInput = popupProfileAdd.querySelector('.popup__input_type_card-name');
+  const linkInput = popupProfileAdd.querySelector('.popup__input_type_url');
+
+  const cardData = {
+    name: nameInput.value,
+    link: linkInput.value,
+  };
+
+  const newCard = createCard(cardData, removeCard, handleLike);
+
+  cardsContainer.prepend(newCard);
+
+  closeTopPopup();
+  event.target.reset(); // Сброс формы после добавления карточки
+}
+
+const form = document.forms['new-place'];
+// const form = popupProfileAdd.querySelector('.popup__form');
+
+form.addEventListener('submit', addNewCard);
+
+
