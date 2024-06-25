@@ -51,9 +51,13 @@ function removeCard(cardElement) {
   cardElement.remove();
 }
 
+function handleLike(evt) {
+  evt.target.classList.toggle('card__like-button_is-active');
+}
+
 // @todo: Вывести карточки на страницу
 initialCards.forEach((cardData) => {
-  const card = createCard(cardData, removeCard); // в переменную card кладу результат функции createCard
+  const card = createCard(cardData, removeCard, handleLike); // в переменную card кладу результат функции createCard
 
   cardsContainer.append(card);
 });
@@ -140,10 +144,6 @@ document.querySelector('.places__list').addEventListener('click', (e) => {
   }
 });
 
-function handleLike(evt) {
-  evt.target.classList.toggle('card__like-button_is-active');
-}
-
 // функция добавления новой карточки также не работает, подозреваю, что если сделать click по кнопке, а не submit, то все будет ок - нифига
 function addNewCard(event) {
   event.preventDefault();
@@ -168,5 +168,3 @@ const form = document.forms['new-place'];
 // const form = popupProfileAdd.querySelector('.popup__form');
 
 form.addEventListener('submit', addNewCard);
-
-
