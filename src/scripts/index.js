@@ -55,6 +55,16 @@ function handleLike(evt) {
   evt.target.classList.toggle('card__like-button_is-active');
 }
 
+// document.querySelector('.places__list').addEventListener('click', (e) => {
+//   if (e.target.classList.contains('card__image')) {
+//     e.preventDefault();
+
+//     popupImageViewer.querySelector('.popup__image').setAttribute('src', e.target.src);
+//     popupCaption.querySelector('.popup__caption').value = document.querySelector('.card__title').value;
+//     openPopup(popupImageViewer);
+//   }
+// });
+
 // @todo: Вывести карточки на страницу
 initialCards.forEach((cardData) => {
   const card = createCard(cardData, removeCard, handleLike); // в переменную card кладу результат функции createCard
@@ -82,6 +92,7 @@ const btnProfileEdit = document.querySelector('.profile__edit-button');
 const popupProfileAdd = document.querySelector('.popup_type_new-card');
 const popupProfileEdit = document.querySelector('.popup_type_edit');
 const popupImageViewer = document.querySelector('.popup_type_image');
+const popupCaption = document.querySelector('.popup__caption');
 
 // eslint-disable-next-line
 const body = document.body;
@@ -144,7 +155,6 @@ document.querySelector('.places__list').addEventListener('click', (e) => {
   }
 });
 
-// функция добавления новой карточки также не работает, подозреваю, что если сделать click по кнопке, а не submit, то все будет ок - нифига
 function addNewCard(event) {
   event.preventDefault();
 
