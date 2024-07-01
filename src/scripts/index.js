@@ -33,10 +33,11 @@ body.addEventListener('click', (e) => {
   }
 });
 
-// Используем событие keydown для обработки нажатия клавиши Esc
+// Используем событие keydown для обработки нажатия клавиши Esc - вынести в отдельную функцию, всунуть в openModal
 document.body.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' || e.key === 'Esc' || e.keyCode === 27) {
     closeModal();
+    // document.body.removeEventListener();
   }
 });
 

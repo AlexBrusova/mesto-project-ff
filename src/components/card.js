@@ -32,7 +32,10 @@ export function createCard(cardData, deleteCard, likeClickHandler, openImageHand
   const cardLikeButton = cardElement.querySelector('.card__like-button');
 
   cardLikeButton.addEventListener('click', likeClickHandler);
-  cardImage.addEventListener('click', openImageHandler);
+  cardImage.addEventListener('click', () => {
+    openImageHandler(popupImageViewer);
+  });
+
   // Обработка события при нажатии на кнопку удаления
   cardDeleteButton.addEventListener('click', () => {
     deleteCard(cardElement);
