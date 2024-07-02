@@ -1,19 +1,27 @@
-import { handleEscClose } from '../scripts/index.js';
+const handleEscClose = (e) => {
+  if (e.key === 'Escape' || e.key === 'Esc' || e.keyCode === 27) {
+    const activePopup = document.querySelector('.popup_is-opened');
 
-let openedPopup;
-
-export function closeModal() {
-  if (openedPopup) {
-    openedPopup.classList.remove('popup_is-opened');
-    document.removeEventListener('keydown', handleEscClose);
-    openedPopup = null;
+    closeModal(activePopup);
   }
-}
+};
 
-export function openModal(popup) {
-  openedPopup = popup;
-  openedPopup.classList.add('popup_is-opened');
+export const closeModal = (popup) => {
+  popup.classList.remove('popup_is-opened');
+  document.removeEventListener('keydown', handleEscClose);
+};
+
+export const openModal = (popup) => {
+  popup.classList.add('popup_is-opened');
   document.addEventListener('keydown', handleEscClose);
-}
+};
 
-export default { closeModal, openModal };
+export const setCloseModalEventListener = (modalWindow) => {
+  modalWindow.addEventListener('mousedown', (e) => {
+    if (e.target.classList.contains('popup__close') || e.target.classList.contains('popup_is-opened')) {
+      closeModal(modalWindow);
+    }
+  });
+};
+
+export default {};

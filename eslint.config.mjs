@@ -35,6 +35,14 @@ export default [
       '@stylistic/js': stylisticJs,
     },
     rules: {
+      'no-use-before-define': [
+        'error',
+        {
+          functions: true,
+          classes: true,
+          variables: false,
+        },
+      ],
       'import/extensions': ['error', 'always', { ignorePackages: true }],
       '@stylistic/js/padding-line-between-statements': [
         'error',

@@ -1,5 +1,5 @@
 import './styles/index.css';
-import { openModal, closeModal } from '../components/modal.js';
+import { openModal, closeModal, setCloseModalEventListener } from '../components/modal.js';
 import initialCards from './cards.js';
 import {
   createCard,
@@ -23,9 +23,7 @@ const popupDescriptionInput = document.querySelector('.popup__input_type_descrip
 const formProfile = document.forms['edit-profile'];
 const nameInput = popupProfileAdd.querySelector('.popup__input_type_card-name');
 const linkInput = popupProfileAdd.querySelector('.popup__input_type_url');
-const form = document.forms['new-place'];
-const currentName = popupNameInput.value;
-const currentDescription = popupDescriptionInput.value;
+const cardForm = document.forms['new-place'];
 
 export function handleImageClick(e) {
   e.preventDefault();
@@ -34,6 +32,7 @@ export function handleImageClick(e) {
   const imageTitle = e.target.alt;
 
   popupImageViewer.querySelector('.popup__image').setAttribute('src', imageSrc);
+  popupImageViewer.querySelector('.popup__image').setAttribute('alt', imageTitle);
   popupCaption.textContent = imageTitle;
   openModal(popupImageViewer);
 }
@@ -45,19 +44,11 @@ initialCards.forEach((cardData) => {
   cardsContainer.append(card);
 });
 
-body.addEventListener('click', (e) => {
-  if (e.target.classList.contains('popup__close') || e.target.classList.contains('popup_is-opened')) {
-    closeModal();
-  }
-});
-
-// Используем событие keydown для обработки нажатия клавиши Esc - вынести в отдельную функцию, всунуть в openModal
-
-export function handleEscClose (e) {
-  if (e.key === 'Escape' || e.key === 'Esc' || e.keyCode === 27) {
-    closeModal();
-  }
-};
+// body.addEventListener('click', (e) => {
+//   if (e.target.classList.contains('popup__close') || e.target.classList.contains('popup_is-opened')) {
+//     closeModal();
+//   }
+// });
 
 // document.body.addEventListener('keydown', (e) => {
 //   if (e.key === 'Escape' || e.key === 'Esc' || e.keyCode === 27) {
@@ -80,16 +71,16 @@ btnProfileEdit.addEventListener('click', (e) => {
   openModal(popupProfileEdit);
 });
 
-function handleFormSubmit(evt) {
+function handleProfileFormSubmit(evt) {
   evt.preventDefault();
 
-  profileName.textContent = currentName;
-  profileDescription.textContent = currentDescription;
+  profileName.textContent = popupNameInput.value;
+  profileDescription.textContent = popupDescriptionInput.value;
 
   closeModal(popupProfileEdit);
 }
 
-formProfile.addEventListener('submit', handleFormSubmit);
+formProfile.addEventListener('submit', handleProfileFormSubmit);
 
 function addNewCard(event) {
   event.preventDefault();
@@ -103,10 +94,12 @@ function addNewCard(event) {
 
   cardsContainer.prepend(newCard);
 
-  closeModal();
+  closeModal(popupProfileAdd);
   event.target.reset(); // Сброс формы после добавления карточки
 }
 
-form.addEventListener('submit', addNewCard);
-
-export default { handleImageClick, handleEscClose };
+cardForm.addEventListener('submit', addNewCard);
+setCloseModalEventListener(popupProfileEdit);
+setCloseModalEventListener(popupImageViewer);
+setCloseModalEventListener(popupProfileAdd);
+export default { handleImageClick };
