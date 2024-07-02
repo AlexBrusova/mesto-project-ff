@@ -1,7 +1,14 @@
 import './styles/index.css';
 import { openModal, closeModal } from '../components/modal.js';
 import initialCards from './cards.js';
-import { createCard, handleLike, removeCard, cardsContainer, handleImageClick } from '../components/card.js';
+import {
+  createCard,
+  handleLike,
+  removeCard,
+  cardsContainer,
+  popupImageViewer,
+  popupCaption,
+} from '../components/card.js';
 
 const btnProfileAdd = document.querySelector('.profile__add-button');
 const btnProfileEdit = document.querySelector('.profile__edit-button');
@@ -20,6 +27,17 @@ const form = document.forms['new-place'];
 const currentName = popupNameInput.value;
 const currentDescription = popupDescriptionInput.value;
 
+export function handleImageClick(e) {
+  e.preventDefault();
+
+  const imageSrc = e.target.src;
+  const imageTitle = e.target.alt;
+
+  popupImageViewer.querySelector('.popup__image').setAttribute('src', imageSrc);
+  popupCaption.textContent = imageTitle;
+  openModal(popupImageViewer);
+}
+
 // @todo: Вывести карточки на страницу
 initialCards.forEach((cardData) => {
   const card = createCard(cardData, removeCard, handleLike, openModal, handleImageClick); // в переменную card кладу результат функции createCard
@@ -34,12 +52,19 @@ body.addEventListener('click', (e) => {
 });
 
 // Используем событие keydown для обработки нажатия клавиши Esc - вынести в отдельную функцию, всунуть в openModal
-document.body.addEventListener('keydown', (e) => {
+
+export function handleEscClose (e) {
   if (e.key === 'Escape' || e.key === 'Esc' || e.keyCode === 27) {
     closeModal();
-    // document.body.removeEventListener();
   }
-});
+};
+
+// document.body.addEventListener('keydown', (e) => {
+//   if (e.key === 'Escape' || e.key === 'Esc' || e.keyCode === 27) {
+//     closeModal();
+//     // document.body.removeEventListener();
+//   }
+// });
 
 btnProfileAdd.addEventListener('click', (e) => {
   e.preventDefault();
@@ -83,3 +108,5 @@ function addNewCard(event) {
 }
 
 form.addEventListener('submit', addNewCard);
+
+export default { handleImageClick, handleEscClose };
