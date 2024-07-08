@@ -26,13 +26,11 @@ const linkInput = popupProfileAdd.querySelector('.popup__input_type_url');
 const cardForm = document.forms['new-place'];
 const popupImageViewer = document.querySelector('.popup_type_image');
 const popupCaption = document.querySelector('.popup__caption');
-const popupTitle = document.querySelector('.card__title')
 
 function handleImageClick(link, name) {
   openModal(popupImageViewer);
   popupImageViewer.src = link;
   popupImageViewer.alt = name;
-  popupTitle.textContent = name;
   popupCaption.textContent = name;
 }
 
