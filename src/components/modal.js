@@ -1,3 +1,4 @@
+
 const handleEscClose = (e) => {
   if (e.key === 'Escape' || e.key === 'Esc' || e.keyCode === 27) {
     const activePopup = document.querySelector('.popup_is-opened');

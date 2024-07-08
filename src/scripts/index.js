@@ -6,8 +6,8 @@ import {
   handleLike,
   removeCard,
   cardsContainer,
-  popupImageViewer,
-  popupCaption,
+  // popupImageViewer,
+  // popupCaption,
 } from '../components/card.js';
 
 const btnProfileAdd = document.querySelector('.profile__add-button');
@@ -24,22 +24,24 @@ const formProfile = document.forms['edit-profile'];
 const nameInput = popupProfileAdd.querySelector('.popup__input_type_card-name');
 const linkInput = popupProfileAdd.querySelector('.popup__input_type_url');
 const cardForm = document.forms['new-place'];
+const popupImageViewer = document.querySelector('.popup_type_image');
+const popupCaption = document.querySelector('.popup__caption');
 
-export function handleImageClick(e) {
+function handleImageClick(e) {
   e.preventDefault();
 
   const imageSrc = e.target.src;
   const imageTitle = e.target.alt;
 
-  popupImageViewer.querySelector('.popup__image').setAttribute('src', imageSrc);
-  popupImageViewer.querySelector('.popup__image').setAttribute('alt', imageTitle);
+  popupImageViewer.setAttribute('src', imageSrc);
+  popupImageViewer.setAttribute('alt', imageTitle);
   popupCaption.textContent = imageTitle;
   openModal(popupImageViewer);
 }
 
 // @todo: Вывести карточки на страницу
 initialCards.forEach((cardData) => {
-  const card = createCard(cardData, removeCard, handleLike, openModal, handleImageClick); // в переменную card кладу результат функции createCard
+  const card = createCard(cardData, removeCard, handleLike, handleImageClick); // в переменную card кладу результат функции createCard
 
   cardsContainer.append(card);
 });
@@ -90,7 +92,7 @@ function addNewCard(event) {
     link: linkInput.value,
   };
 
-  const newCard = createCard(cardData, removeCard, handleLike, openModal, handleImageClick);
+  const newCard = createCard(cardData, removeCard, handleLike, handleImageClick);
 
   cardsContainer.prepend(newCard);
 
@@ -102,4 +104,3 @@ cardForm.addEventListener('submit', addNewCard);
 setCloseModalEventListener(popupProfileEdit);
 setCloseModalEventListener(popupImageViewer);
 setCloseModalEventListener(popupProfileAdd);
-export default { handleImageClick };
