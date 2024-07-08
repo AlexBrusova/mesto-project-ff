@@ -23,7 +23,7 @@ export function createCard(cardData, deleteCard, likeClickHandler, handleCardCli
   cardLikeButton.addEventListener('click', likeClickHandler);
 
   cardImage.addEventListener('click', () => {
-    handleCardClick(cardData.link, cardData.name)
+    handleCardClick(cardData)
   });
 
   // cardImage.addEventListener('click', () => {
