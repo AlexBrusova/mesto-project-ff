@@ -11,6 +11,7 @@ export function createCard(cardData, deleteCard, likeClickHandler, handleCardCli
   const cardElement = cardTemplate.querySelector('.card').cloneNode(true); // клонирую шаблон, если убрать cloneNode(true), то будет та же самая ссылка, что и в cardTemplate. Это нужно, чтобы копировать себе шаблон и использовать его, не изменяя общий шаблон
   const cardImage = cardElement.querySelector('.card__image'); // устанавливаю значение для изображения, устанавливаю ссылки на изображение, но уже конкретно в копии шаблона
   const cardTitle = cardElement.querySelector('.card__title'); // устанавливаю значение для заголовка
+  const popupImageViewer = document.querySelector('.popup_type_image');
 
   // Присваиваю значения для dom узла из списка карточек
   cardTitle.textContent = cardData.name;
@@ -22,13 +23,13 @@ export function createCard(cardData, deleteCard, likeClickHandler, handleCardCli
 
   cardLikeButton.addEventListener('click', likeClickHandler);
 
-  cardImage.addEventListener('click', () => {
-    handleCardClick(cardData.link, cardData.name)
-  });
-
   // cardImage.addEventListener('click', () => {
-  //   openImageHandler(popupImageViewer);
+  //   handleCardClick(cardData.link, cardData.name)
   // });
+
+  cardImage.addEventListener('click', () => {
+    handleCardClick(popupImageViewer);
+  });
 
   // Обработка события при нажатии на кнопку удаления
   cardDeleteButton.addEventListener('click', () => {
