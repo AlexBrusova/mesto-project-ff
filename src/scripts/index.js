@@ -26,18 +26,27 @@ const linkInput = popupProfileAdd.querySelector('.popup__input_type_url');
 const cardForm = document.forms['new-place'];
 const popupImageViewer = document.querySelector('.popup_type_image');
 const popupCaption = document.querySelector('.popup__caption');
+const popupTitle = document.querySelector('.card__title')
 
-function handleImageClick(e) {
-  e.preventDefault();
-
-  const imageSrc = e.target.src;
-  const imageTitle = e.target.alt;
-
-  popupImageViewer.setAttribute('src', imageSrc);
-  popupImageViewer.setAttribute('alt', imageTitle);
-  popupCaption.textContent = imageTitle;
+function handleImageClick(link, name) {
   openModal(popupImageViewer);
+  popupImageViewer.src = link;
+  popupImageViewer.alt = name;
+  popupTitle.textContent = name;
+  popupCaption.textContent = name;
 }
+
+// function handleImageClick(e) {
+//   e.preventDefault();
+
+//   const imageSrc = e.target.src;
+//   const imageTitle = e.target.alt;
+
+//   popupImageViewer.setAttribute('src', imageSrc);
+//   popupImageViewer.setAttribute('alt', imageTitle);
+//   popupCaption.textContent = imageTitle;
+//   openModal(popupImageViewer);
+// }
 
 // @todo: Вывести карточки на страницу
 initialCards.forEach((cardData) => {
