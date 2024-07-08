@@ -25,10 +25,11 @@ const nameInput = popupProfileAdd.querySelector('.popup__input_type_card-name');
 const linkInput = popupProfileAdd.querySelector('.popup__input_type_url');
 const cardForm = document.forms['new-place'];
 const popupImageViewer = document.querySelector('.popup_type_image');
-const popupImage = document.querySelector('.popup__image');
-const popupCaption = document.querySelector('.popup__caption');
 
 function handleImageClick(item) {
+  const popupImage = document.querySelector('.popup__image');
+  const popupCaption = document.querySelector('.popup__caption');
+
   popupImage.src = item.link;
   popupImage.alt = item.name;
   popupCaption.textContent = item.name;
