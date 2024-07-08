@@ -28,24 +28,24 @@ const popupImageViewer = document.querySelector('.popup_type_image');
 const popupImage = document.querySelector('.popup__image')
 const popupCaption = document.querySelector('.popup__caption');
 
-// function handleImageClick(link, name) {
-//   popupImage.src = link;
-//   popupImage.alt = name;
-//   popupCaption.textContent = name;
-//   openModal(popupImageViewer);
-// }
-
-function handleImageClick(e) {
-  // e.preventDefault();
-
-  const imageSrc = e.target.src;
-  const imageTitle = e.target.alt;
-
-  popupImage.setAttribute('src', imageSrc);
-  popupImage.setAttribute('alt', imageTitle);
-  popupCaption.textContent = imageTitle;
+function handleImageClick(link, name) {
+  popupImage.src = link;
+  popupImage.alt = name;
+  popupCaption.textContent = name;
   openModal(popupImageViewer);
 }
+
+// function handleImageClick(e) {
+//   e.preventDefault();
+
+//   const imageSrc = e.target.src;
+//   const imageTitle = e.target.alt;
+
+//   popupImage.setAttribute('src', imageSrc);
+//   popupImage.setAttribute('alt', imageTitle);
+//   popupCaption.textContent = imageTitle;
+//   openModal(popupImageViewer);
+// }
 
 // @todo: Вывести карточки на страницу
 initialCards.forEach((cardData) => {
