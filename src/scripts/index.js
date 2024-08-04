@@ -2,10 +2,12 @@ import './styles/index.css';
 import { openModal, closeModal, setCloseModalEventListener } from '../components/modal.js';
 import initialCards from './cards.js';
 import { createCard, handleLike, removeCard, cardsContainer } from '../components/card.js';
+import { enableValidation } from '../components/validation.js';
 
 const btnProfileAdd = document.querySelector('.profile__add-button');
 const btnProfileEdit = document.querySelector('.profile__edit-button');
 const popupProfileAdd = document.querySelector('.popup_type_new-card');
+const popupForm = popupProfileAdd.querySelector('.popup__form');
 const popupProfileEdit = document.querySelector('.popup_type_edit');
 // eslint-disable-next-line
 const body = document.body;
@@ -31,7 +33,7 @@ function handleImageClick(item) {
 
 // Вывод карточек на страницу
 initialCards.forEach((cardData) => {
-  const card = createCard(cardData, removeCard, handleLike, handleImageClick); 
+  const card = createCard(cardData, removeCard, handleLike, handleImageClick);
 
   cardsContainer.append(card);
 });
@@ -40,6 +42,15 @@ initialCards.forEach((cardData) => {
 btnProfileAdd.addEventListener('click', (e) => {
   e.preventDefault();
   openModal(popupProfileAdd);
+});
+
+enableValidation({
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  inactiveButtonClass: 'popup__button_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__error_visible',
 });
 
 // Обработка открытия модалки редактирования профиля и проброс значений в инпуты
@@ -52,7 +63,7 @@ btnProfileEdit.addEventListener('click', (e) => {
   openModal(popupProfileEdit);
 });
 
-// Функция редактирования формы профиля, сохранения новых значений и вывода их на стр 
+// Функция редактирования формы профиля, сохранения новых значений и вывода их на стр
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
 
