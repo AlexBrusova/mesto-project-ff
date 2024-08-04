@@ -37,11 +37,15 @@
     <div class="popup__content">
       <button type="button" class="popup__close"></button>
       <h3 class="popup__title">Редактировать профиль</h3>
-      <form class="popup__form" name="edit-profile">
-        <input id="profile__input_name" type="text" name="name" class="popup__input popup__input_type_name" placeholder="Имя" required minlength="2" maxlength="40" pattern="^[a-zA-Zа-яА-Я\s+\,\-]+$" data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы">
-        <span class="popup__error profile__input_name-error">Вы пропустили это поле.</span>
-        <input id="profile__input_description" type="text" name="description" class="popup__input popup__input_type_description" placeholder="Занятие" required minlength="2" maxlength="200" pattern="^[a-zA-Zа-яА-Я\s+\,\-]+$" data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы">
-        <span class="popup__error profile__input_description-error">Вы пропустили это поле.</span>
+      <form class="popup__form" name="edit-profile" novalidate>
+        <label class="popup_form_part">
+          <input id="profile__input_name" type="text" name="name" class="popup__input popup__input_type_name" placeholder="Имя" required minlength="2" maxlength="40" pattern="^[a-zA-Zа-яА-Я\s+\,\-]+$" data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы">
+          <span class="popup__error profile__input_name-error">Вы пропустили это поле.</span>
+        </label>
+        <label class="popup_form_part">
+          <input id="profile__input_description" type="text" name="description" class="popup__input popup__input_type_description" placeholder="Занятие" required minlength="2" maxlength="200" pattern="^[a-zA-Zа-яА-Я\s+\,\-]+$" data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы">
+          <span class="popup__error profile__input_description-error">Вы пропустили это поле.</span>
+        </label>
         <button type="submit" class="button popup__button">Сохранить</button>
       </form>
     </div>
@@ -50,11 +54,15 @@
     <div class="popup__content">
       <button type="button" class="popup__close"></button>
       <h3 class="popup__title">Новое место</h3>
-      <form class="popup__form" name="new-place">
-        <input id="place_input_name" type="text" name="place-name" class="popup__input popup__input_type_card-name" placeholder="Название" required>
-        <span class="popup__error place_input_name-error">Вы пропустили это поле.</span>
-        <input id="place_input_link" type="url" name="link" class="popup__input popup__input_type_url" placeholder="Ссылка на картинку" required>
-        <span class="popup__error place_input_link-error">Введите адрес сайта.</span>
+      <form class="popup__form" name="new-place" novalidate>
+        <label class="popup_form_part">
+          <input id="place_input_name" type="text" name="place-name" class="popup__input popup__input_type_card-name" placeholder="Название" required>
+          <span class="popup__error place_input_name-error">Вы пропустили это поле.</span>
+        </label>
+        <label class="popup_form_part">
+          <input id="place_input_link" type="url" name="link" class="popup__input popup__input_type_url" placeholder="Ссылка на картинку" required>
+          <span class="popup__error place_input_link-error">Введите адрес сайта.</span>
+        </label>
         <button type="submit" class="button popup__button">Сохранить</button>
       </form>
     </div>

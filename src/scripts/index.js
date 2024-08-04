@@ -2,7 +2,7 @@ import './styles/index.css';
 import { openModal, closeModal, setCloseModalEventListener } from '../components/modal.js';
 import initialCards from './cards.js';
 import { createCard, handleLike, removeCard, cardsContainer } from '../components/card.js';
-import { enableValidation } from '../components/validation.js';
+import { enableValidation, clearValidation } from '../components/validation.js';
 
 const btnProfileAdd = document.querySelector('.profile__add-button');
 const btnProfileEdit = document.querySelector('.profile__edit-button');
@@ -22,12 +22,15 @@ const cardForm = document.forms['new-place'];
 const popupImageViewer = document.querySelector('.popup_type_image');
 const popupImage = document.querySelector('.popup__image');
 const popupCaption = document.querySelector('.popup__caption');
+const popupProfileFormPart = popupProfileEdit.querySelectorAll('.popup_form_part')
+const popupCardFormPart = popupProfileAdd.querySelectorAll('.popup_form_part')
 
 // Функция обработки клика по карточке
 function handleImageClick(item) {
   popupImage.src = item.link;
   popupImage.alt = item.name;
   popupCaption.textContent = item.name;
+  clearValidation(popupProfileEdit, [popupProfileFormPart, false])
   openModal(popupImageViewer);
 }
 
@@ -41,6 +44,7 @@ initialCards.forEach((cardData) => {
 // Обработка открытия модалки добавления новой карточки
 btnProfileAdd.addEventListener('click', (e) => {
   e.preventDefault();
+  clearValidation(popupProfileAdd, [popupCardFormPart, true])
   openModal(popupProfileAdd);
 });
 
@@ -59,6 +63,7 @@ btnProfileEdit.addEventListener('click', (e) => {
 
   popupNameInput.value = profileName.textContent;
   popupDescriptionInput.value = profileDescription.textContent;
+  clearValidation(popupProfileEdit, [popupFormPart, false]); 
 
   openModal(popupProfileEdit);
 });
