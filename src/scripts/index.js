@@ -3,7 +3,7 @@ import { openModal, closeModal, setCloseModalEventListener } from '../components
 import initialCards from './cards.js';
 import { createCard, handleLike, removeCard, cardsContainer } from '../components/card.js';
 import { enableValidation, clearValidation } from '../components/validation.js';
-import { getUserInfo } from '../components/api.js';
+import { getUserInfo, getInitialCards } from '../components/api.js';
 
 const btnProfileAdd = document.querySelector('.profile__add-button');
 const btnProfileEdit = document.querySelector('.profile__edit-button');
@@ -36,12 +36,12 @@ function handleImageClick(item) {
   openModal(popupImageViewer);
 }
 
-// Вывод карточек на страницу
-initialCards.forEach((cardData) => {
-  const card = createCard(cardData, removeCard, handleLike, handleImageClick);
+// // Вывод карточек на страницу
+// initialCards.forEach((cardData) => {
+//   const card = createCard(cardData, removeCard, handleLike, handleImageClick);
 
-  cardsContainer.append(card);
-});
+//   cardsContainer.append(card);
+// });
 
 // Обработка открытия модалки добавления новой карточки
 btnProfileAdd.addEventListener('click', (e) => {
@@ -49,6 +49,8 @@ btnProfileAdd.addEventListener('click', (e) => {
   clearValidation(popupProfileAdd, [popupCardFormPart, true]);
   openModal(popupProfileAdd);
 });
+
+// Функция валидации попапов
 
 enableValidation({
   formSelector: '.popup__form',
@@ -59,12 +61,13 @@ enableValidation({
   errorClass: 'popup__error_visible',
 });
 
+// Функция заполнения профиля данными пользователя
 let userId = '';
 
 const fillDataUserProfile = (profileName, getUserInfo) => {
   getUserInfo()
     .then((response) => {
-      userId = response['_id'];
+      userId = response._id;
       profileName.textContent = response.name;
       profileDescription.textContent = response.about;
       profileImg.style.backgroundImage = `url(${response.avatar})`;
@@ -74,7 +77,28 @@ const fillDataUserProfile = (profileName, getUserInfo) => {
     });
 };
 
-fillDataUserProfile(profileName, getUserInfo);
+// Функция для отображения карточек
+const renderCards = (initialCards, cardsContainer) => {
+  initialCards.forEach((card) => {
+    const cardElement = createCard(card.name, card.link);
+
+    cardsContainer.append(cardElement);
+  });
+};
+
+// Получение данных пользователя и карточек
+Promise.all([getUserInfo(), getInitialCards()])
+  .then(([userData, cardsData]) => {
+    // Заполнение данных профиля
+    fillDataUserProfile(userData, profileName, profileDescription, profileImg);
+    // Отображение карточек
+    renderCards(cardsData, cardsContainer);
+  })
+  .catch((error) => {
+    console.error('Ошибка при загрузке данных:', error);
+  });
+
+// fillDataUserProfile(profileName, getUserInfo);
 
 // Обработка открытия модалки редактирования профиля и проброс значений в инпуты
 btnProfileEdit.addEventListener('click', (e) => {
