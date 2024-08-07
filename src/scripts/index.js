@@ -33,9 +33,24 @@ function handleImageClick(item) {
   popupImage.src = item.link;
   popupImage.alt = item.name;
   popupCaption.textContent = item.name;
-  clearValidation(popupProfileEdit, [popupProfileFormPart, false]);
   openModal(popupImageViewer);
 }
+
+// Обработка открытия модалки редактирования профиля и проброс значений в инпуты
+btnProfileEdit.addEventListener('click', (e) => {
+  e.preventDefault();
+
+  popupNameInput.value = profileName.textContent;
+  popupDescriptionInput.value = profileDescription.textContent;
+  clearValidation(popupProfileEdit, [popupProfileFormPart, false]);
+
+  openModal(popupProfileEdit);
+});
+
+const editProfileAvatarButton = document.querySelector('.profile__image-container')
+editProfileAvatarButton.addEventListener('click', () => {
+  openModal()
+})
 
 // // Вывод карточек на страницу
 // initialCards.forEach((cardData) => {
@@ -71,7 +86,9 @@ popupProfileForm.addEventListener('submit', editProfileForm);
 
 // Обработка открытия модалки добавления новой карточки
 btnProfileAdd.addEventListener('click', (e) => {
-  e.preventDefault();
+  // e.preventDefault();
+  nameInput.value = '';
+  linkInput.value = '';
   clearValidation(popupProfileAdd, [popupCardFormPart, true]);
   openModal(popupProfileAdd);
 });
@@ -111,48 +128,37 @@ getStartInfo()
 })
 .catch((error) => console.error(error))
 
-// Обработка открытия модалки редактирования профиля и проброс значений в инпуты
-btnProfileEdit.addEventListener('click', (e) => {
-  e.preventDefault();
-
-  popupNameInput.value = profileName.textContent;
-  popupDescriptionInput.value = profileDescription.textContent;
-  clearValidation(popupProfileEdit, [popupProfileFormPart, false]);
-
-  openModal(popupProfileEdit);
-});
-
 // Функция редактирования формы профиля, сохранения новых значений и вывода их на стр
-function handleProfileFormSubmit(evt) {
-  evt.preventDefault();
+// function handleProfileFormSubmit(evt) {
+//   evt.preventDefault();
 
-  profileName.textContent = popupNameInput.value;
-  profileDescription.textContent = popupDescriptionInput.value;
+//   profileName.textContent = popupNameInput.value;
+//   profileDescription.textContent = popupDescriptionInput.value;
 
-  closeModal(popupProfileEdit);
-}
+//   closeModal(popupProfileEdit);
+// }
 // Вызов функции редактирования профиля
 
-formProfile.addEventListener('submit', handleProfileFormSubmit);
+// formProfile.addEventListener('submit', handleProfileFormSubmit);
 
 // Функция добавления новой карточки
-function addNewCard(event) {
-  event.preventDefault();
+// function addNewCard(event) {
+//   event.preventDefault();
 
-  const cardData = {
-    name: nameInput.value,
-    link: linkInput.value,
-  };
+//   const cardData = {
+//     name: nameInput.value,
+//     link: linkInput.value,
+//   };
 
-  const newCard = createCard(cardData, removeCard, handleLike, handleImageClick);
+//   const newCard = createCard(cardData, removeCard, handleLike, handleImageClick);
 
-  cardsContainer.prepend(newCard);
+//   cardsContainer.prepend(newCard);
 
-  closeModal(popupProfileAdd);
-  event.target.reset(); // Сброс формы после добавления карточки
-}
+//   closeModal(popupProfileAdd);
+//   event.target.reset(); 
+// }
 
-cardForm.addEventListener('submit', addNewCard);
-setCloseModalEventListener(popupProfileEdit);
-setCloseModalEventListener(popupImageViewer);
-setCloseModalEventListener(popupProfileAdd);
+// cardForm.addEventListener('submit', addNewCard);
+// setCloseModalEventListener(popupProfileEdit);
+// setCloseModalEventListener(popupImageViewer);
+// setCloseModalEventListener(popupProfileAdd);
