@@ -116,4 +116,38 @@ export const deleteCard = async (cardId) => {
   })
 }
 
-export default { getUserInfo, getInitialCards, getStartInfo, editUserProfile, editUserCard, deleteCard};
+export const addCardLike = async (cardId) => {
+  return fetch(`https://nomoreparties.co/v1/pwff-cohort-1/cards/likes/${cardId}`, {
+    method: 'PUT',
+    headers: {
+      authorization: '670ce060-111f-4096-85bf-c2c94c40c45a',
+      'Content-Type': 'application/json',
+    },
+  })
+  .then((res) => {
+    if (res.ok) {
+      return res.json()
+    } else {
+      Promise.reject(`Ошибка запроса к серверу: ${res.status}`);
+    }
+  })
+}
+
+export const removeCardLike = async (cardId) => {
+  return fetch(`https://nomoreparties.co/v1/pwff-cohort-1/cards/likes/${cardId}`, {
+    method: 'DELETE',
+    headers: {
+      authorization: '670ce060-111f-4096-85bf-c2c94c40c45a',
+      'Content-Type': 'application/json',
+    },
+  })
+  .then((res) => {
+    if (res.ok) {
+      return res.json()
+    } else {
+      Promise.reject(`Ошибка запроса к серверу: ${res.status}`);
+    }
+  })
+}
+
+export default { getUserInfo, getInitialCards, getStartInfo, editUserProfile, editUserCard, deleteCard, addCardLike, removeCardLike};
