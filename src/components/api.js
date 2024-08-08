@@ -33,7 +33,7 @@ export const getInitialCards = async() =>
   }
 
 export const editUserProfile = async(inputName, inputDescription) => {
-  fetch(`https://nomoreparties.co/v1/cohortId/users/me`, {
+  fetch(`https://nomoreparties.co/v1/pwff-cohort-1/users/me`, {
     headers: {
       authorization: '670ce060-111f-4096-85bf-c2c94c40c45a',
       'Content-Type': 'application/json',
@@ -53,25 +53,50 @@ export const editUserProfile = async(inputName, inputDescription) => {
   })
 }
 
-export const editUserCard = async(inputCardName, inputCardLink) => {
-  fetch(`https://nomoreparties.co/v1/cohortId/cards`, {
-    method: 'POST',
-    headers: {
-      authorization: '670ce060-111f-4096-85bf-c2c94c40c45a',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      name: `${inputCardName}`,
-      link: `${inputCardLink}`,
-    })
-  })
-  .then((res) => {
-    if (res.ok) {
-      return res.json()
+// export const editUserCard = async(inputCardName, inputCardLink) => {
+//   fetch(`https://nomoreparties.co/v1/pwff-cohort-1/cards`, {
+//     method: 'POST',
+//     headers: {
+//       authorization: '670ce060-111f-4096-85bf-c2c94c40c45a',
+//       'Content-Type': 'application/json',
+//     },
+//     body: JSON.stringify({
+//       name: `${inputCardName}`,
+//       link: `${inputCardLink}`,
+//     })
+//   })
+//   .then((res) => {
+//     if (res.ok) {
+//       return res.json()
+//     } else {
+//       Promise.reject(`Ошибка запроса к серверу: ${res.status}`);
+//     }
+//   })
+// }
+
+export const editUserCard = async (inputCardName, inputCardLink) => {
+  try {
+    const response = await fetch(`https://nomoreparties.co/v1/pwff-cohort-1/cards`, {
+      method: 'POST',
+      headers: {
+        authorization: '670ce060-111f-4096-85bf-c2c94c40c45a',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: `${inputCardName}`,
+        link: `${inputCardLink}`,
+      })
+    });
+
+    if (response.ok) {
+      return response.json();
     } else {
-      Promise.reject(`Ошибка запроса к серверу: ${res.status}`);
+      throw new Error(`Ошибка запроса к серверу: ${response.status}`);
     }
-  })
-}
+  } catch (error) {
+    console.error('Ошибка при добавлении карточки:', error);
+    return Promise.reject(error); // Передайте ошибку дальше
+  }
+};
 
 export default { getUserInfo, getInitialCards, getStartInfo, editUserProfile, editUserCard};
