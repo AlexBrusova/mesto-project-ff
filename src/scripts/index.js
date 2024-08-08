@@ -47,10 +47,12 @@ btnProfileEdit.addEventListener('click', (e) => {
   openModal(popupProfileEdit);
 });
 
-const editProfileAvatarButton = document.querySelector('.profile__image-container')
-editProfileAvatarButton.addEventListener('click', () => {
-  openModal()
-})
+// const editProfileAvatarButton = document.querySelector('.profile__image-container'); 
+// const popupTypeProfileAvatarEdit = document.querySelector('.popup_type_edit-avatar')
+
+// editProfileAvatarButton.addEventListener('click', () => {
+//   openModal()
+// })
 
 // // Вывод карточек на страницу
 // initialCards.forEach((cardData) => {
@@ -129,36 +131,37 @@ getStartInfo()
 .catch((error) => console.error(error))
 
 // Функция редактирования формы профиля, сохранения новых значений и вывода их на стр
-// function handleProfileFormSubmit(evt) {
-//   evt.preventDefault();
+function handleProfileFormSubmit(evt) {
+  evt.preventDefault();
 
-//   profileName.textContent = popupNameInput.value;
-//   profileDescription.textContent = popupDescriptionInput.value;
+  profileName.textContent = popupNameInput.value;
+  profileDescription.textContent = popupDescriptionInput.value;
 
-//   closeModal(popupProfileEdit);
-// }
+  closeModal(popupProfileEdit);
+}
 // Вызов функции редактирования профиля
 
-// formProfile.addEventListener('submit', handleProfileFormSubmit);
+formProfile.addEventListener('submit', handleProfileFormSubmit);
 
 // Функция добавления новой карточки
-// function addNewCard(event) {
-//   event.preventDefault();
+function addNewCard(event) {
+  event.preventDefault();
 
-//   const cardData = {
-//     name: nameInput.value,
-//     link: linkInput.value,
-//   };
+  const cardData = {
+    name: nameInput.value,
+    link: linkInput.value,
+  };
 
-//   const newCard = createCard(cardData, removeCard, handleLike, handleImageClick);
+  const newCard = createCard(cardData, removeCard, handleLike, handleImageClick);
 
-//   cardsContainer.prepend(newCard);
+  cardsContainer.prepend(newCard);
 
-//   closeModal(popupProfileAdd);
-//   event.target.reset(); 
-// }
+  closeModal(popupProfileAdd);
+  event.target.reset(); 
+}
 
-// cardForm.addEventListener('submit', addNewCard);
-// setCloseModalEventListener(popupProfileEdit);
-// setCloseModalEventListener(popupImageViewer);
-// setCloseModalEventListener(popupProfileAdd);
+cardForm.addEventListener('submit', addNewCard);
+setCloseModalEventListener(popupProfileEdit);
+setCloseModalEventListener(popupImageViewer);
+setCloseModalEventListener(popupProfileAdd);
+

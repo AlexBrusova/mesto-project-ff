@@ -6,12 +6,20 @@ export const cardsContainer = document.querySelector('.places__list'); // пол
 export function createCard(cardData, deleteCard, likeClickHandler, handleCardClick) {
   const cardElement = cardTemplate.querySelector('.card').cloneNode(true); // клонирую шаблон, если убрать cloneNode(true), то будет та же самая ссылка, что и в cardTemplate. Это нужно, чтобы копировать себе шаблон и использовать его, не изменяя общий шаблон
   const cardImage = cardElement.querySelector('.card__image'); // устанавливаю значение для изображения, устанавливаю ссылки на изображение, но уже конкретно в копии шаблона
-  const cardTitle = cardElement.querySelector('.card__title'); 
+  const cardTitle = cardElement.querySelector('.card__title');
 
   // Присваиваю значения для dom узла из списка карточек
   cardTitle.textContent = cardData.name;
   cardImage.src = cardData.link;
   cardImage.alt = cardData.name;
+
+  // if (cardData.owner['_id'] == userId) {
+  //   cardDeleteButton.addEventListener('click', () => {
+  //     deleteCard(cardElement, cardData['_id']);
+  //   });
+  // } else {
+  //   cardDeleteButton.remove();
+  // }
 
   const cardDeleteButton = cardElement.querySelector('.card__delete-button');
   const cardLikeButton = cardElement.querySelector('.card__like-button');
