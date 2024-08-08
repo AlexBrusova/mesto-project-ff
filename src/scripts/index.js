@@ -1,9 +1,9 @@
 import './styles/index.css';
 import { openModal, closeModal, setCloseModalEventListener } from '../components/modal.js';
 import initialCards from './cards.js';
-import { createCard, handleLike, removeCard, cardsContainer } from '../components/card.js';
+import { createCard, handleLike, cardsContainer, popupConfirm, handleDeleteCard } from '../components/card.js';
 import { enableValidation, clearValidation } from '../components/validation.js';
-import { getStartInfo, editUserProfile, editUserCard} from '../components/api.js';
+import { getStartInfo, editUserProfile, editUserCard, deleteCard} from '../components/api.js';
 
 const btnProfileAdd = document.querySelector('.profile__add-button');
 const btnProfileEdit = document.querySelector('.profile__edit-button');
@@ -27,6 +27,23 @@ const popupProfileFormPart = popupProfileEdit.querySelectorAll('.popup_form_part
 const popupCardFormPart = popupProfileAdd.querySelectorAll('.popup_form_part');
 const profileImg = document.querySelector('.profile__image');
 const listOfPlaces = document.querySelector('.places__list');
+const popupConfirmBtn =popupConfirm.querySelector('.popup__button')
+
+const confirmDelete = () => {
+  deleteCard(popupConfirm.dataset.cardId)
+  .then(() => {
+    listOfPlaces.querySelector(`[data-card-id="${popupConfirm.dataset.cardId}"]`).remove()
+  })
+  .catch(() => {
+    console.error(error)
+  })
+  .finally(() => {
+    delete popupConfirm.dataset.cardId
+    closeModal(popupConfirm)
+  })
+}
+
+popupConfirmBtn.addEventListener('click', confirmDelete)
 
 // Функция обработки клика по карточке
 function handleImageClick(item) {
@@ -77,7 +94,7 @@ const editProfileForm = () => {
 const cardFormSubmit = () => {
   editUserCard(nameInput.value, linkInput.value)
   .then((response) => {
-    const newCard = createCard(response, response['owner']['_id'], removeCard, handleImageClick, handleLike);
+    const newCard = createCard(response, response['owner']['_id'], handleDeleteCard, handleImageClick, handleLike);
     listOfPlaces.prepend(newCard)
     popupProfileForm.reset()
     closeModal(popupProfileAdd)
@@ -117,7 +134,7 @@ const fillDataUserProfile = (userData) => {
 
 const loadCards = (cardsData, userId) => {
   cardsData.forEach((cardData) => {
-    listOfPlaces.append(createCard(cardData, userId, removeCard, handleImageClick, handleLike));
+    listOfPlaces.append(createCard(cardData, userId, handleDeleteCard, handleImageClick, handleLike));
   })
 }
 
@@ -144,23 +161,23 @@ function handleProfileFormSubmit(evt) {
 formProfile.addEventListener('submit', handleProfileFormSubmit);
 
 // Функция добавления новой карточки
-function addNewCard(event) {
-  event.preventDefault();
+// function addNewCard(event) {
+//   event.preventDefault();
 
-  const cardData = {
-    name: nameInput.value,
-    link: linkInput.value,
-  };
+//   const cardData = {
+//     name: nameInput.value,
+//     link: linkInput.value,
+//   };
 
-  const newCard = createCard(cardData, removeCard, handleLike, handleImageClick);
+//   const newCard = createCard(cardData, handleDeleteCard, handleLike, handleImageClick);
 
-  cardsContainer.prepend(newCard);
+//   cardsContainer.prepend(newCard);
 
-  closeModal(popupProfileAdd);
-  event.target.reset(); 
-}
+//   closeModal(popupProfileAdd);
+//   event.target.reset(); 
+// }
 
-cardForm.addEventListener('submit', addNewCard);
+// cardForm.addEventListener('submit', addNewCard);
 setCloseModalEventListener(popupProfileEdit);
 setCloseModalEventListener(popupImageViewer);
 setCloseModalEventListener(popupProfileAdd);
