@@ -89,17 +89,17 @@ export const enableValidation = (validateParams) => {
   });
 };
 
-export const clearValidation = (formElement, validationconfig) => {
-  formElement.querySelector('.popup__button').disabled = validationconfig[1];
-  validationconfig[0].forEach((labelElement) => {
-    labelElement.querySelector('.popup__input').classList.remove('popup__input_type_error');
-    labelElement.querySelector('.popup__error').classList.remove('popup__error_visible');
-  });
-  if (formElement.querySelector('.popup__button').disabled) {
-    formElement.querySelector('.popup__button').classList.add('popup__button_disabled');
+const clearValidation = (formElement, validationconfig) => {
+  formElement.querySelector(validationconfig.popupButtonSelector).disabled=validationconfig.buttonState;
+  validationconfig.labelList.forEach((labelElement) => {
+    labelElement.querySelector(validationconfig.popupInputSelector).classList.remove(validationconfig.popupInputErrorClass)
+    labelElement.querySelector(validationconfig.popupLabelSelector).classList.remove(validationconfig.popupLabelErrorVisibleClass)
+  })
+  if (formElement.querySelector(validationconfig.popupButtonSelector).disabled) {
+    formElement.querySelector(validationconfig.popupButtonSelector).classList.add(validationconfig.popupButtonDisabledClass)
   } else {
-    formElement.querySelector('.popup__button').classList.remove('popup__button_disabled');
+    formElement.querySelector(validationconfig.popupButtonSelector).classList.remove(validationconfig.popupButtonDisabledClass)
   }
-};
+}
 
 export default { enableValidation, clearValidation };
