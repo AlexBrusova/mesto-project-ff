@@ -6,31 +6,28 @@ const showInputError = (formElement, inputElement, inputErrorClass, errorClass, 
   errorElement.classList.add(`${errorClass}`);
 };
 
-const hideInputError = (formElement, inputElement, inputErrorClass, errorClass) => {
-  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
+const hideInputError = (formElement, inputElement, inputErrorClass, errorClass) => { 
+  const errorElement = formElement.querySelector(`.${inputElement.id}-error`)
+  inputElement.classList.remove(`${inputErrorClass}`)
+  errorElement.classList.remove(`${errorClass}`)
+  errorElement.textContent = ''
+}
 
-  inputElement.classList.remove(`${inputErrorClass}`);
-  errorElement.classList.remove(`${errorClass}`);
-  errorElement.textContent = '';
-};
-
-const checkInputValidity = (formElement, inputElement, inputErrorClass, errorClass) => {
+const checkInputVadility = (formElement, inputElement, inputErrorClass, errorClass) => {
   if (inputElement.validity.patternMismatch) {
-    inputElement.setCustomValidity(inputElement.dataset.errorMessage);
-    showInputError(formElement, inputElement, inputErrorClass, errorClass, inputElement.dataset.errorMessage);
+    inputElement.setCustomValidity(inputElement.dataset.errorMessage)
+    showInputError(formElement, inputElement, inputErrorClass, errorClass, inputElement.dataset.errorMessage)
   } else {
-    // если передать пустую строку, то будут доступны
-    // стандартные браузерные сообщения
-    hideInputError(formElement, inputElement, inputErrorClass, errorClass);
-    inputElement.setCustomValidity('');
-  }
+    hideInputError(formElement, inputElement, inputErrorClass, errorClass)
+    inputElement.setCustomValidity("")
+}
 
   if (!inputElement.validity.valid) {
-    showInputError(formElement, inputElement, inputErrorClass, errorClass, inputElement.validationMessage);
+    showInputError(formElement, inputElement, inputErrorClass, errorClass, inputElement.validationMessage)
   } else {
-    hideInputError(formElement, inputElement, inputErrorClass, errorClass);
+    hideInputError(formElement, inputElement, inputErrorClass, errorClass)  
   }
-};
+}
 
 const hasInvalidInput = (inputList) => inputList.some((inputElement) => !inputElement.validity.valid);
 
@@ -57,7 +54,7 @@ const setEventListeners = (
   toggleButtonState(formElement, inputList, submitButtonSelector, inactiveButtonClass);
   inputList.forEach((inputElement) => {
     inputElement.addEventListener('input', () => {
-      checkInputValidity(formElement, inputElement, inputErrorClass, errorClass);
+      checkInputVadility(formElement, inputElement, inputErrorClass, errorClass);
       toggleButtonState(formElement, inputList, submitButtonSelector, inactiveButtonClass);
     });
   });
@@ -89,17 +86,21 @@ export const enableValidation = (validateParams) => {
   });
 };
 
-const clearValidation = (formElement, validationconfig) => {
-  formElement.querySelector(validationconfig.popupButtonSelector).disabled=validationconfig.buttonState;
-  validationconfig.labelList.forEach((labelElement) => {
-    labelElement.querySelector(validationconfig.popupInputSelector).classList.remove(validationconfig.popupInputErrorClass)
-    labelElement.querySelector(validationconfig.popupLabelSelector).classList.remove(validationconfig.popupLabelErrorVisibleClass)
-  })
-  if (formElement.querySelector(validationconfig.popupButtonSelector).disabled) {
-    formElement.querySelector(validationconfig.popupButtonSelector).classList.add(validationconfig.popupButtonDisabledClass)
-  } else {
-    formElement.querySelector(validationconfig.popupButtonSelector).classList.remove(validationconfig.popupButtonDisabledClass)
-  }
+export function clearValidation(formElement, config) {
+  const inputList = Array.from(formElement.querySelectorAll(config.inputSelector));
+  const submitButton = formElement.querySelector(config.submitButtonSelector);
+
+  inputList.forEach((inputElement) => {
+      const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
+      if (errorElement) {
+          errorElement.textContent = ''; // Очищаем текст ошибки
+      }
+      inputElement.classList.remove(config.inputErrorClass); // Убираем класс ошибки
+  });
+
+  // Деактивируем кнопку
+  submitButton.classList.add(config.inactiveButtonClass);
+  submitButton.disabled = true;
 }
 
 export default { enableValidation, clearValidation };

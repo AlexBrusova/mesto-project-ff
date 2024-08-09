@@ -1,0 +1,9 @@
+.profile_image-container {
+  cursor: pointer;
+  position: relative;
+}
+
+.profile_image-container:hover .profile_image-overlay {
+  visibility: visible;
+  opacity: 1;
+}

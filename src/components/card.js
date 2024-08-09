@@ -1,6 +1,6 @@
 import { openModal } from './modal.js';
 import { addCardLike, deleteCard, removeCardLike } from './api.js';
-export const popupConfirm = document.querySelector('.popup_confirm');
+export const popupConfirm = document.querySelector('.popup_type_confirm');
 const cardTemplate = document.querySelector('#card-template').content; // получаю темплейт карточки, это ссылка на DOM узел
 
 export const cardsContainer = document.querySelector('.places__list'); // получаю элемент, в который мы будем вставлять темплейт карточки
