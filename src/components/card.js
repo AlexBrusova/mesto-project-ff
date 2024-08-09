@@ -1,5 +1,5 @@
 import { openModal } from './modal.js';
-import { addCardLike, removeCardLike } from './api.js';
+import { addCardLike, deleteCard, removeCardLike } from './api.js';
 export const popupConfirm = document.querySelector('.popup_confirm');
 const cardTemplate = document.querySelector('#card-template').content; // получаю темплейт карточки, это ссылка на DOM узел
 
@@ -21,7 +21,7 @@ export function createCard(cardData, deleteCard, likeClickHandler, handleCardCli
 
   cardData.likes.some((likedUser) => {
     if (likedUser['_id'] == userId) {
-      likeButton.classList.add('card__like-button_is-active');
+      cardLikeButton.classList.add('card__like-button_is-active');
     }
   });
 
@@ -35,7 +35,9 @@ export function createCard(cardData, deleteCard, likeClickHandler, handleCardCli
     });
   }
 
-  cardLikeButton.addEventListener('click', likeClickHandler);
+  cardLikeButton.addEventListener('click', () => {
+    likeClickHandler(cardLikeButton, cardData._id, likesCounter)
+  });
 
   cardImage.addEventListener('click', () => {
     handleCardClick(cardData);
@@ -50,14 +52,15 @@ export function createCard(cardData, deleteCard, likeClickHandler, handleCardCli
 }
 
 // Функция удаления карточки
-// export function removeCard(cardElement) {
+// export function handleDeleteCard(cardElement) {
 //   cardElement.remove();
 // }
 
-export const handleDeleteCard = (card, cardId) => {
+export const handleDeleteCard = (cardElement, cardId) => {
   openModal(popupConfirm);
   popupConfirm.dataset.cardId = cardId;
-  card.dataset.cardId = cardId;
+  cardElement.dataset.cardId = cardId;
+  deleteCard(cardId)
 };
 
 // Функци лайка

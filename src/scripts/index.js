@@ -94,7 +94,7 @@ const editProfileForm = () => {
 const cardFormSubmit = () => {
   editUserCard(nameInput.value, linkInput.value)
   .then((response) => {
-    const newCard = createCard(response, response['owner']['_id'], handleDeleteCard, handleImageClick, handleLike);
+    const newCard = createCard(response, handleDeleteCard, handleLike, handleImageClick, response['owner']['_id']);
     listOfPlaces.prepend(newCard)
     popupProfileForm.reset()
     closeModal(popupProfileAdd)
@@ -134,7 +134,7 @@ const fillDataUserProfile = (userData) => {
 
 const loadCards = (cardsData, userId) => {
   cardsData.forEach((cardData) => {
-    listOfPlaces.append(createCard(cardData, userId, handleDeleteCard, handleImageClick, handleLike));
+    listOfPlaces.append(createCard(cardData, handleDeleteCard, handleLike, handleImageClick, userId));
   })
 }
 
