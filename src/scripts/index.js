@@ -35,13 +35,12 @@ const profileImg = document.querySelector('.profile__image');
 const listOfPlaces = document.querySelector('.places__list');
 const popupConfirmBtn = popupConfirm.querySelector('.popup__button');
 
-
-const popupButtonSelector = '.popup__button';
-const popupButtonDisabledClass = 'popup__button_disabled'
-const popupInputSelector = '.popup__input';
-const popupInputErrorClass = 'popup__input_type_error'
-const popupLabelSelector = '.popup__error'
-const popupLabelErrorVisibleClass = 'popup__error_visible'
+const popupButtonSelector = 'popup__button';
+const popupButtonDisabledClass = 'popup__button_disabled';
+const popupInputSelector = 'popup__input';
+const popupInputErrorClass = 'popup__input_type_error';
+const popupLabelSelector = 'popup__error';
+const popupLabelErrorVisibleClass = 'popup__error_visible';
 
 const confirmDelete = () => {
   deleteCard(popupConfirm.dataset.cardId)
