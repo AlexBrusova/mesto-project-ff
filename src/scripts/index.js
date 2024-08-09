@@ -98,6 +98,7 @@ const awaitResponse = (buttonElement, state) => {
 }
 
 avatarForm.addEventListener('submit',() => {
+  closeModal(popupTypeProfileAvatarEdit)
   awaitResponse(avatarForm.querySelector('.popup__button'), true)
   changeAvatar(avatarInputLink.value)
   .then((res) => {
