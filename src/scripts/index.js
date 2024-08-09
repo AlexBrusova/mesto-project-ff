@@ -82,20 +82,6 @@ btnProfileEdit.addEventListener('click', (e) => {
   openModal(popupProfileEdit);
 });
 
-//Изменение профиля
-popupNameInput.value = profileName.textContent;
-popupDescriptionInput.value = profileDescription.textContent;
-const editProfileForm = () => {
-  editUserProfile(popupNameInput.value, popupDescriptionInput.value).then(() => {
-    profileName.textContent = popupNameInput.value;
-    profileDescription.textContent = popupDescriptionInput.value;
-    closeModal(popupProfileForm);
-  });
-};
-
-userForm.addEventListener('submit', editProfileForm);
-
-
 // Обработка редактирования аватара
 editProfileAvatarButton.addEventListener('click', () => {
   avatarInputLink.value = ''
@@ -103,7 +89,7 @@ editProfileAvatarButton.addEventListener('click', () => {
   openModal(popupTypeProfileAvatarEdit)
 })
 
-const awaitResponseApi = (buttonElement, state) => {
+const awaitResponse = (buttonElement, state) => {
   if (state) {
     buttonElement.textContent = 'Сохранение...'
   } else [
@@ -112,7 +98,7 @@ const awaitResponseApi = (buttonElement, state) => {
 }
 
 avatarForm.addEventListener('submit',() => {
-  awaitResponseApi(avatarForm.querySelector('.popup__button'), true)
+  awaitResponse(avatarForm.querySelector('.popup__button'), true)
   changeAvatar(avatarInputLink.value)
   .then((res) => {
     profileImg.style.backgroundImage = `url(${res.avatar})`
@@ -122,9 +108,30 @@ avatarForm.addEventListener('submit',() => {
     console.error(error)
   })
   .finally(() => {
-    awaitResponseApi(avatarForm.querySelector('.popup__button'), false)
+    awaitResponse(avatarForm.querySelector('.popup__button'), false)
   })
 })
+
+//Изменение профиля
+popupNameInput.value = profileName.textContent;
+popupDescriptionInput.value = profileDescription.textContent;
+const editProfileForm = () => {
+  awaitResponse(profileForm.querySelector('.popup__button'), true)
+  editUserProfile(popupNameInput.value, popupDescriptionInput.value)
+  .then(() => {
+    profileName.textContent = popupNameInput.value;
+    profileDescription.textContent = popupDescriptionInput.value;
+    closeModal(popupProfileForm);
+  })
+  .catch((error) => {
+    console.error(error)
+  })
+  .finally(() => {
+    awaitResponse(profileForm.querySelector('.popup__button'), false)
+  })
+};
+
+userForm.addEventListener('submit', editProfileForm);
 
 // @todo: Обработа формы добавления карточки
 const cardFormSubmit = () => {
@@ -139,7 +146,13 @@ const cardFormSubmit = () => {
     listOfPlaces.prepend(newCard);
     popupProfileForm.reset();
     closeModal(popupProfileAdd);
-  });
+  })
+  .catch((error) => {
+    console.error(error)
+  })
+  .finally(() => {
+    awaitResponse(profileForm.querySelector('.popup__button'), false)
+  })
 };
 
 // Обработка открытия модалки добавления новой карточки
