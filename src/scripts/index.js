@@ -98,7 +98,6 @@ const awaitResponse = (buttonElement, state) => {
 }
 
 avatarForm.addEventListener('submit',() => {
-  closeModal(popupTypeProfileAvatarEdit)
   awaitResponse(avatarForm.querySelector('.popup__button'), true)
   changeAvatar(avatarInputLink.value)
   .then((res) => {
@@ -117,7 +116,7 @@ avatarForm.addEventListener('submit',() => {
 popupNameInput.value = profileName.textContent;
 popupDescriptionInput.value = profileDescription.textContent;
 const editProfileForm = () => {
-  awaitResponse(profileForm.querySelector('.popup__button'), true)
+  awaitResponse(popupProfileForm.querySelector('.popup__button'), true)
   editUserProfile(popupNameInput.value, popupDescriptionInput.value)
   .then(() => {
     profileName.textContent = popupNameInput.value;
@@ -158,10 +157,10 @@ const cardFormSubmit = () => {
 
 // Обработка открытия модалки добавления новой карточки
 btnProfileAdd.addEventListener('click', (e) => {
-  // e.preventDefault();
+  e.preventDefault();
   nameInput.value = '';
   linkInput.value = '';
-  clearValidation(popupProfileAdd, validationConfig)
+  clearValidation(popupProfileAdd, validationConfig);
   openModal(popupProfileAdd);
 });
 
@@ -181,7 +180,7 @@ enableValidation({
 const fillDataUserProfile = (userData) => {
   profileName.textContent = userData.name;
   profileDescription.textContent = userData.about;
-  // profileImg.style.backgroundImage = `url(${userData.avatar})`;
+  profileImg.style.backgroundImage = `url(${userData.avatar})`;
 };
 
 const loadCards = (cardsData, userId) => {
@@ -210,7 +209,7 @@ function handleProfileFormSubmit(evt) {
 }
 // Вызов функции редактирования профиля
 
-formProfile.addEventListener('submit', handleProfileFormSubmit);
+popupProfileEdit.addEventListener('submit', handleProfileFormSubmit);
 
 // Функция добавления новой карточки
 // function addNewCard(event) {
