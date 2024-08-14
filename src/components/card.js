@@ -1,6 +1,4 @@
-import { openModal } from './modal.js';
-import { addCardLike, deleteCard, removeCardLike } from './api.js';
-export const popupConfirm = document.querySelector('.popup_type_confirm');
+import { addCardLike, removeCardLike } from './api.js';
 const cardTemplate = document.querySelector('#card-template').content; // получаю темплейт карточки, это ссылка на DOM узел
 
 export const cardsContainer = document.querySelector('.places__list'); // получаю элемент, в который мы будем вставлять темплейт карточки
@@ -43,31 +41,9 @@ export function createCard(cardData, deleteCard, likeClickHandler, handleCardCli
     handleCardClick(cardData);
   });
 
-  // Обработка события при нажатии на кнопку удаления
-  // cardDeleteButton.addEventListener('click', () => {
-  //   deleteCard(cardElement);
-  // });
-
   return cardElement;
 }
 
-// Функция удаления карточки
-// export function handleDeleteCard(cardElement) {
-//   cardElement.remove();
-// }
-
-export const handleDeleteCard = (cardElement, cardId) => {
-  openModal(popupConfirm);
-  popupConfirm.dataset.cardId = cardId;
-  cardElement.dataset.cardId = cardId;
-  deleteCard(cardId)
-};
-
-// Функци лайка
-// export function handleLike(evt) {
-//   console.log(evt.target);
-//   evt.target.classList.toggle('card__like-button_is-active ');
-// }
 
 export const handleLike = (cardLikeButton, cardId, likesCounter) => {
   if(!cardLikeButton.classList.contains('card__like-button_is-active')) {
@@ -75,14 +51,14 @@ export const handleLike = (cardLikeButton, cardId, likesCounter) => {
     .then((res) => {
       cardLikeButton.classList.add('card__like-button_is-active')
       likesCounter.textContent = `${Number(res.likes.length)}`
-    })
+    }).catch(err => console.log(err))
   } else {
     removeCardLike(cardId)
     .then((res) => {
       cardLikeButton.classList.remove('card__like-button_is-active')
       likesCounter.textContent = `${Number(res.likes.length)}`
-    })
+    }).catch(err => console.log(err))
   }
 }
 
-export default { createCard, handleLike, cardsContainer, popupConfirm };
+export default { createCard, handleLike, cardsContainer};

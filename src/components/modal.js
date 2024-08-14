@@ -22,7 +22,9 @@ export const openModal = (popup) => {
 
 // Функция закрытия модалок
 export const setCloseModalEventListener = (modalWindow) => {
-  modalWindow.addEventListener('mousedown', (e) => {
+  modalWindow.addEventListener('mousedown', (e) => {    
+    console.log(e.target);
+    
     if (e.target.classList.contains('popup__close') || e.target.classList.contains('popup_is-opened')) {
       closeModal(modalWindow);
     }

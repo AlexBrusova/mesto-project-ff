@@ -1,3 +1,11 @@
+const checkResponse = (response) => {
+  if (response.ok) {
+    return response.json();
+  } else {
+    Promise.reject(`Ошибка запроса к серверу: ${response.status}`);
+  }
+}
+
 export const getUserInfo = async() =>
   fetch(`https://nomoreparties.co/v1/pwff-cohort-1/users/me`, {
     headers: {
@@ -5,13 +13,7 @@ export const getUserInfo = async() =>
       'Content-Type': 'application/json',
     },
     method: 'GET',
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    } else {
-      Promise.reject(`Ошибка запроса к серверу: ${res.status}`);
-    }
-  });
+  }).then(checkResponse);
 
 export const getInitialCards = async() =>
   fetch(`https://nomoreparties.co/v1/pwff-cohort-1/cards`, {
@@ -20,19 +22,13 @@ export const getInitialCards = async() =>
       'Content-Type': 'application/json',
     },
     method: 'GET',
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    } else {
-      Promise.reject(`Ошибка запроса к серверу: ${res.status}`);
-    }
-  });
+  }).then(checkResponse);
 
   export const getStartInfo = () => {
     return Promise.all([getUserInfo(), getInitialCards()])
   }
 
-export const editUserProfile = async(inputName, inputDescription) => {
+export const editUserProfile = async(inputName, inputDescription) => 
   fetch(`https://nomoreparties.co/v1/pwff-cohort-1/users/me`, {
     headers: {
       authorization: '670ce060-111f-4096-85bf-c2c94c40c45a',
@@ -44,14 +40,8 @@ export const editUserProfile = async(inputName, inputDescription) => {
       about: `${inputDescription}`,
     })
   })
-  .then((res) => {
-    if (res.ok) {
-      return res.json()
-    } else {
-      Promise.reject(`Ошибка запроса к серверу: ${res.status}`);
-    }
-  })
-}
+  .then(checkResponse)
+
 
 export const editUserCard = async (inputCardName, inputCardLink) => {
   try {
@@ -66,12 +56,7 @@ export const editUserCard = async (inputCardName, inputCardLink) => {
         link: `${inputCardLink}`,
       })
     });
-
-    if (response.ok) {
-      return response.json();
-    } else {
-      throw new Error(`Ошибка запроса к серверу: ${response.status}`);
-    }
+    return await checkResponse(response);
   } catch (error) {
     console.error('Ошибка при добавлении карточки:', error);
     return Promise.reject(error); // Передайте ошибку дальше
@@ -86,13 +71,7 @@ export const deleteCard = async (cardId) => {
       'Content-Type': 'application/json',
     },
   })
-  .then((res) => {
-    if (res.ok) {
-      return res.json()
-    } else {
-      Promise.reject(`Ошибка запроса к серверу: ${res.status}`);
-    }
-  })
+  .then(checkResponse)
 }
 
 export const addCardLike = async (cardId) => {
@@ -103,13 +82,7 @@ export const addCardLike = async (cardId) => {
       'Content-Type': 'application/json',
     },
   })
-  .then((res) => {
-    if (res.ok) {
-      return res.json()
-    } else {
-      Promise.reject(`Ошибка запроса к серверу: ${res.status}`);
-    }
-  })
+  .then(checkResponse)
 }
 
 export const removeCardLike = async (cardId) => {
@@ -120,13 +93,7 @@ export const removeCardLike = async (cardId) => {
       'Content-Type': 'application/json',
     },
   })
-  .then((res) => {
-    if (res.ok) {
-      return res.json()
-    } else {
-      Promise.reject(`Ошибка запроса к серверу: ${res.status}`);
-    }
-  })
+  .then(checkResponse)
 }
 
 export const changeAvatar = async (avatarImgLink) => {
@@ -140,13 +107,7 @@ export const changeAvatar = async (avatarImgLink) => {
       avatar: `${avatarImgLink}`,
     })
   })
-  .then((res) => {
-    if (res.ok) {
-      return res.json()
-    } else {
-      Promise.reject(`Ошибка запроса к серверу: ${res.status}`);
-    }
-  })
+  .then(checkResponse)
 }
 
 export default { getUserInfo, getInitialCards, getStartInfo, editUserProfile, editUserCard, deleteCard, addCardLike, removeCardLike, changeAvatar};
