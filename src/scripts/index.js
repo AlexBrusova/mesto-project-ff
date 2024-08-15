@@ -1,9 +1,5 @@
 import { changeAvatar, deleteCard, editUserCard, editUserProfile, getStartInfo } from '../components/api.js';
-import {
-  createCard,
-  handleLike,
-  popupConfirm
-} from '../components/card.js';
+import { createCard, handleLike} from '../components/card.js';
 import { closeModal, openModal, setCloseModalEventListener } from '../components/modal.js';
 import { clearValidation, enableValidation } from '../components/validation.js';
 import { awaitResponse } from '../utils/utils.js';
@@ -25,12 +21,14 @@ const popupImage = document.querySelector('.popup__image');
 const popupCaption = document.querySelector('.popup__caption');
 const profileImg = document.querySelector('.profile__image');
 const listOfPlaces = document.querySelector('.places__list');
+const popupConfirm = document.querySelector('.popup_type_confirm'); 
 const popupConfirmBtn = popupConfirm.querySelector('.popup__button');
 const popupTypeProfileAvatarEdit = document.querySelector('.popup_edit-avatar');
 const editProfileAvatarButton = document.querySelector('.profile_image-container');
 const avatarForm = popupTypeProfileAvatarEdit.querySelector('.popup__form');
 const avatarInputLink = avatarForm.querySelector('.popup_input_type_url');
 const cardAddForm = document.forms['new-place'];
+export const cardsContainer = document.querySelector('.places__list'); // получаю элемент, в который мы будем вставлять темплейт карточки
 
 export const validationConfig = {
   formSelector: '.popup__form',
@@ -38,7 +36,7 @@ export const validationConfig = {
   submitButtonSelector: '.popup__button',
   inactiveButtonClass: 'popup__button_disabled',
   inputErrorClass: 'popup__input_type_error',
-  errorClass: 'popup__error_visible'
+  errorClass: 'popup__error_visible',
 };
 
 const handleDeleteCard = (cardElement, cardId) => {
@@ -105,7 +103,7 @@ avatarForm.addEventListener('submit', () => {
 const editProfileForm = () => {
   awaitResponse(userForm.querySelector('.popup__button'), true);
   editUserProfile(popupNameInput.value, popupDescriptionInput.value)
-    .then((data) => {      
+    .then((data) => {
       profileName.textContent = data.name;
       profileDescription.textContent = data.about;
       closeModal(popupProfileEdit);
@@ -120,14 +118,8 @@ const editProfileForm = () => {
 
 userForm.addEventListener('submit', editProfileForm);
 
-export const renderCard = ({container, data, position, userId}) => {
-  const newCard = createCard(
-    data,
-    handleDeleteCard,
-    handleLike,
-    handleImageClick,
-    userId
-  );
+export const renderCard = ({ container, data, position, userId }) => {
+  const newCard = createCard(data, handleDeleteCard, handleLike, handleImageClick, userId);
   switch (position) {
     case 'prepend':
       container.prepend(newCard);
@@ -137,22 +129,23 @@ export const renderCard = ({container, data, position, userId}) => {
     default:
       break;
   }
-}
+};
 
 // @todo: Обработа формы добавления карточки
 const cardFormSubmit = (e) => {
   e.preventDefault();
   awaitResponse(popupProfileAdd.querySelector('.popup__button'), true);
-  editUserCard(nameInput.value, linkInput.value).then((response) => {
-    renderCard({
-      container: listOfPlaces,
-      data: response,
-      userId: response.owner._id,
-      position: 'prepend'
+  editUserCard(nameInput.value, linkInput.value)
+    .then((response) => {
+      renderCard({
+        container: listOfPlaces,
+        data: response,
+        userId: response.owner._id,
+        position: 'prepend',
+      });
+      cardAddForm.reset();
+      closeModal(popupProfileAdd);
     })
-    cardAddForm.reset();
-    closeModal(popupProfileAdd);
-  })
     .catch((error) => {
       console.error(error);
     })
@@ -163,7 +156,6 @@ const cardFormSubmit = (e) => {
 
 cardAddForm.addEventListener('submit', cardFormSubmit);
 
-
 // Обработка открытия модалки добавления новой карточки
 btnProfileAdd.addEventListener('click', (e) => {
   e.preventDefault();
@@ -172,7 +164,6 @@ btnProfileAdd.addEventListener('click', (e) => {
   clearValidation(popupProfileAdd, validationConfig);
   openModal(popupProfileAdd);
 });
-
 
 // Функция валидации попапов
 
@@ -197,8 +188,8 @@ const loadCards = (cardsData, userId) => {
       container: listOfPlaces,
       data: cardData,
       userId: userId,
-      position: 'append'
-    })
+      position: 'append',
+    });
   });
 };
 
@@ -211,9 +202,8 @@ getStartInfo()
   })
   .catch((error) => console.error(error));
 
-
 setCloseModalEventListener(popupProfileEdit);
 setCloseModalEventListener(popupImageViewer);
 setCloseModalEventListener(popupProfileAdd);
 setCloseModalEventListener(popupTypeProfileAvatarEdit);
-setCloseModalEventListener(popupConfirm)
+setCloseModalEventListener(popupConfirm);
